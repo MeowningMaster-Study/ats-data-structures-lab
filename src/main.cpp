@@ -1,22 +1,23 @@
 #include <list>
 #include "binomial_heap.hpp"
+#include "complex_number.hpp"
 
 int main()
 {
 	// BinHeap test
 
 	int ch, key;
-	list<Node *> _heap;
+	list<Node<ComplexNumber> *> _heap;
 
 	// Insert data in the heap
-	_heap = insert(_heap, 10);
-	_heap = insert(_heap, 20);
-	_heap = insert(_heap, 30);
+	_heap = insert<ComplexNumber>(_heap, {1, 2});
+	_heap = insert<ComplexNumber>(_heap, {3, 5});
+	_heap = insert<ComplexNumber>(_heap, {-7, 10});
 
 	cout << "Heap elements after insertion:\n";
 	printHeap(_heap);
 
-	Node *temp = getMin(_heap);
+	Node<ComplexNumber> *temp = getMin(_heap);
 	cout << "\nMinimum element of heap "
 		 << temp->data << "\n";
 

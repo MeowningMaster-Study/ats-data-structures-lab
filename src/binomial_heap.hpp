@@ -7,15 +7,18 @@
 using namespace std;
 
 // A Binomial Tree node.
+template <typename T>
 struct Node
 {
-	int data, degree;
+	T data;
+	int degree;
 	Node *child, *sibling, *parent;
 };
 
-Node *newNode(int key)
+template <typename T>
+Node<T> *newNode(T key)
 {
-	Node *temp = new Node;
+	auto *temp = new Node<T>;
 	temp->data = key;
 	temp->degree = 0;
 	temp->child = temp->parent = temp->sibling = NULL;
@@ -23,7 +26,8 @@ Node *newNode(int key)
 }
 
 // This function merge two Binomial Trees.
-Node *mergeBinomialTrees(Node *b1, Node *b2)
+template <typename T>
+Node<T> *mergeBinomialTrees(Node<T> *b1, Node<T> *b2)
 {
 	// Make sure b1 is smaller
 	if (b1->data > b2->data)
@@ -41,14 +45,14 @@ Node *mergeBinomialTrees(Node *b1, Node *b2)
 
 // This function perform union operation on two
 // binomial heap i.e. l1 & l2
-list<Node *> unionBionomialHeap(list<Node *> l1,
-								list<Node *> l2)
+template <typename T>
+list<Node<T> *> unionBionomialHeap(list<Node<T> *> l1, list<Node<T> *> l2)
 {
 	// _new to another binomial heap which contain
 	// new heap after merging l1 & l2
-	list<Node *> _new;
-	list<Node *>::iterator it = l1.begin();
-	list<Node *>::iterator ot = l2.begin();
+	list<Node<T> *> _new;
+	auto it = l1.begin();
+	auto ot = l2.begin();
 	while (it != l1.end() && ot != l2.end())
 	{
 		// if D(l1) <= D(l2)
@@ -86,13 +90,15 @@ list<Node *> unionBionomialHeap(list<Node *> l1,
 // adjust function rearranges the heap so that
 // heap is in increasing order of degree and
 // no two binomial trees have same degree in this heap
-list<Node *> adjust(list<Node *> _heap)
+template <typename T>
+list<Node<T> *> adjust(list<Node<T> *> _heap)
 {
 	if (_heap.size() <= 1)
 		return _heap;
-	list<Node *> new_heap;
-	list<Node *>::iterator it1, it2, it3;
-	it1 = it2 = it3 = _heap.begin();
+	list<Node<T> *> new_heap;
+	auto it1 = _heap.begin();
+	auto it2 = _heap.begin();
+	auto it3 = _heap.begin();
 
 	if (_heap.size() == 2)
 	{
@@ -138,7 +144,7 @@ list<Node *> adjust(list<Node *> _heap)
 		// if degree of two Binomial Tree are same in heap
 		else if ((*it1)->degree == (*it2)->degree)
 		{
-			Node *temp;
+			Node<T> *temp;
 			*it1 = mergeBinomialTrees(*it1, *it2);
 			it2 = _heap.erase(it2);
 			if (it3 != _heap.end())
@@ -149,11 +155,11 @@ list<Node *> adjust(list<Node *> _heap)
 }
 
 // inserting a Binomial Tree into binomial heap
-list<Node *> insertATreeInHeap(list<Node *> _heap,
-							   Node *tree)
+template <typename T>
+list<Node<T> *> insertATreeInHeap(list<Node<T> *> _heap, Node<T> *tree)
 {
 	// creating a new heap i.e temp
-	list<Node *> temp;
+	list<Node<T> *> temp;
 
 	// inserting Binomial Tree into heap
 	temp.push_back(tree);
@@ -169,11 +175,12 @@ list<Node *> insertATreeInHeap(list<Node *> _heap,
 // this function take Binomial Tree as input and return
 // binomial heap after
 // removing head of that tree i.e. minimum element
-list<Node *> removeMinFromTreeReturnBHeap(Node *tree)
+template <typename T>
+list<Node<T> *> removeMinFromTreeReturnBHeap(Node<T> *tree)
 {
-	list<Node *> heap;
-	Node *temp = tree->child;
-	Node *lo;
+	list<Node<T> *> heap;
+	Node<T> *temp = tree->child;
+	Node<T> *lo;
 
 	// making a binomial heap from Binomial Tree
 	while (temp)
@@ -187,18 +194,20 @@ list<Node *> removeMinFromTreeReturnBHeap(Node *tree)
 }
 
 // inserting a key into the binomial heap
-list<Node *> insert(list<Node *> _head, int key)
+template <typename T>
+list<Node<T> *> insert(list<Node<T> *> _head, T key)
 {
-	Node *temp = newNode(key);
+	Node<T> *temp = newNode(key);
 	return insertATreeInHeap(_head, temp);
 }
 
 // return pointer of minimum value Node
 // present in the binomial heap
-Node *getMin(list<Node *> _heap)
+template <typename T>
+Node<T> *getMin(list<Node<T> *> _heap)
 {
-	list<Node *>::iterator it = _heap.begin();
-	Node *temp = *it;
+	auto it = _heap.begin();
+	Node<T> *temp = *it;
 	while (it != _heap.end())
 	{
 		if ((*it)->data < temp->data)
@@ -208,16 +217,16 @@ Node *getMin(list<Node *> _heap)
 	return temp;
 }
 
-list<Node *> extractMin(list<Node *> _heap)
+template <typename T>
+list<Node<T> *> extractMin(list<Node<T> *> _heap)
 {
-	list<Node *> new_heap, lo;
-	Node *temp;
+	list<Node<T> *> new_heap, lo;
+	Node<T> *temp;
 
 	// temp contains the pointer of minimum value
 	// element in heap
 	temp = getMin(_heap);
-	list<Node *>::iterator it;
-	it = _heap.begin();
+	auto it = _heap.begin();
 	while (it != _heap.end())
 	{
 		if (*it != temp)
@@ -236,7 +245,8 @@ list<Node *> extractMin(list<Node *> _heap)
 }
 
 // print function for Binomial Tree
-void printTree(Node *h)
+template <typename T>
+void printTree(Node<T> *h)
 {
 	while (h)
 	{
@@ -247,10 +257,10 @@ void printTree(Node *h)
 }
 
 // print function for binomial heap
-void printHeap(list<Node *> _heap)
+template <typename T>
+void printHeap(list<Node<T> *> _heap)
 {
-	list<Node *>::iterator it;
-	it = _heap.begin();
+	auto it = _heap.begin();
 	while (it != _heap.end())
 	{
 		printTree(*it);
