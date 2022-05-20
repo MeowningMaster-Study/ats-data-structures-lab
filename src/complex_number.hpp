@@ -17,6 +17,11 @@ struct ComplexNumber
     {
         return real == c.real ? (imaginary < c.imaginary) : (real < c.real);
     }
+
+    ComplexNumber operator+(const ComplexNumber &rhs)
+    {
+        return ComplexNumber{real + rhs.real, imaginary + rhs.imaginary};
+    }
 };
 
 ostream &operator<<(ostream &out, const ComplexNumber &c)
