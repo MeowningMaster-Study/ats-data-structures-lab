@@ -1,13 +1,15 @@
 #include <list>
 #include "binomial_heap.hpp"
 #include "complex_number.hpp"
+#include "segment_tree.hpp"
 
 int main()
 {
 	// BinHeap test
+	cout << "BinHeap test\n";
 
 	int ch, key;
-	list<Node<ComplexNumber> *> _heap;
+	list<BHNode<ComplexNumber> *> _heap;
 
 	// Insert data in the heap
 	_heap = insert<ComplexNumber>(_heap, {1, 2});
@@ -17,7 +19,7 @@ int main()
 	cout << "Heap elements after insertion:\n";
 	printHeap(_heap);
 
-	Node<ComplexNumber> *temp = getMin(_heap);
+	BHNode<ComplexNumber> *temp = getMin(_heap);
 	cout << "\nMinimum element of heap "
 		 << temp->data << "\n";
 
@@ -25,6 +27,15 @@ int main()
 	_heap = extractMin(_heap);
 	cout << "Heap after deletion of minimum element\n";
 	printHeap(_heap);
+
+	// Segment tree test
+	cout << "\nSegment tree test\n";
+
+	vector<ComplexNumber> st_values{{4, -3}, {1, -10}, {13, 75}, {17, 25}};
+	int n = st_values.size();
+	SegmentTree<ComplexNumber> st(st_values);
+	ComplexNumber sum = st.sum(1, 0, n - 1, 0, n - 1);
+	cout << sum;
 
 	return 0;
 }
