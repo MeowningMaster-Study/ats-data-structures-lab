@@ -1,4 +1,3 @@
-
 #ifndef _BHEAP_
 #define _BHEAP_
 
@@ -8,17 +7,17 @@ using namespace std;
 
 // A Binomial Tree node.
 template <typename T>
-struct Node
+struct BHNode
 {
 	T data;
 	int degree;
-	Node *child, *sibling, *parent;
+	BHNode *child, *sibling, *parent;
 };
 
 template <typename T>
-Node<T> *newNode(T key)
+BHNode<T> *newNode(T key)
 {
-	auto *temp = new Node<T>;
+	auto *temp = new BHNode<T>;
 	temp->data = key;
 	temp->degree = 0;
 	temp->child = temp->parent = temp->sibling = NULL;
@@ -27,7 +26,7 @@ Node<T> *newNode(T key)
 
 // This function merge two Binomial Trees.
 template <typename T>
-Node<T> *mergeBinomialTrees(Node<T> *b1, Node<T> *b2)
+BHNode<T> *mergeBinomialTrees(BHNode<T> *b1, BHNode<T> *b2)
 {
 	// Make sure b1 is smaller
 	if (b1->data > b2->data)
@@ -46,11 +45,11 @@ Node<T> *mergeBinomialTrees(Node<T> *b1, Node<T> *b2)
 // This function perform union operation on two
 // binomial heap i.e. l1 & l2
 template <typename T>
-list<Node<T> *> unionBionomialHeap(list<Node<T> *> l1, list<Node<T> *> l2)
+list<BHNode<T> *> unionBionomialHeap(list<BHNode<T> *> l1, list<BHNode<T> *> l2)
 {
 	// _new to another binomial heap which contain
 	// new heap after merging l1 & l2
-	list<Node<T> *> _new;
+	list<BHNode<T> *> _new;
 	auto it = l1.begin();
 	auto ot = l2.begin();
 	while (it != l1.end() && ot != l2.end())
@@ -91,11 +90,11 @@ list<Node<T> *> unionBionomialHeap(list<Node<T> *> l1, list<Node<T> *> l2)
 // heap is in increasing order of degree and
 // no two binomial trees have same degree in this heap
 template <typename T>
-list<Node<T> *> adjust(list<Node<T> *> _heap)
+list<BHNode<T> *> adjust(list<BHNode<T> *> _heap)
 {
 	if (_heap.size() <= 1)
 		return _heap;
-	list<Node<T> *> new_heap;
+	list<BHNode<T> *> new_heap;
 	auto it1 = _heap.begin();
 	auto it2 = _heap.begin();
 	auto it3 = _heap.begin();
@@ -144,7 +143,7 @@ list<Node<T> *> adjust(list<Node<T> *> _heap)
 		// if degree of two Binomial Tree are same in heap
 		else if ((*it1)->degree == (*it2)->degree)
 		{
-			Node<T> *temp;
+			BHNode<T> *temp;
 			*it1 = mergeBinomialTrees(*it1, *it2);
 			it2 = _heap.erase(it2);
 			if (it3 != _heap.end())
@@ -156,10 +155,10 @@ list<Node<T> *> adjust(list<Node<T> *> _heap)
 
 // inserting a Binomial Tree into binomial heap
 template <typename T>
-list<Node<T> *> insertATreeInHeap(list<Node<T> *> _heap, Node<T> *tree)
+list<BHNode<T> *> insertATreeInHeap(list<BHNode<T> *> _heap, BHNode<T> *tree)
 {
 	// creating a new heap i.e temp
-	list<Node<T> *> temp;
+	list<BHNode<T> *> temp;
 
 	// inserting Binomial Tree into heap
 	temp.push_back(tree);
@@ -176,11 +175,11 @@ list<Node<T> *> insertATreeInHeap(list<Node<T> *> _heap, Node<T> *tree)
 // binomial heap after
 // removing head of that tree i.e. minimum element
 template <typename T>
-list<Node<T> *> removeMinFromTreeReturnBHeap(Node<T> *tree)
+list<BHNode<T> *> removeMinFromTreeReturnBHeap(BHNode<T> *tree)
 {
-	list<Node<T> *> heap;
-	Node<T> *temp = tree->child;
-	Node<T> *lo;
+	list<BHNode<T> *> heap;
+	BHNode<T> *temp = tree->child;
+	BHNode<T> *lo;
 
 	// making a binomial heap from Binomial Tree
 	while (temp)
@@ -195,19 +194,19 @@ list<Node<T> *> removeMinFromTreeReturnBHeap(Node<T> *tree)
 
 // inserting a key into the binomial heap
 template <typename T>
-list<Node<T> *> insert(list<Node<T> *> _head, T key)
+list<BHNode<T> *> insert(list<BHNode<T> *> _head, T key)
 {
-	Node<T> *temp = newNode(key);
+	BHNode<T> *temp = newNode(key);
 	return insertATreeInHeap(_head, temp);
 }
 
 // return pointer of minimum value Node
 // present in the binomial heap
 template <typename T>
-Node<T> *getMin(list<Node<T> *> _heap)
+BHNode<T> *getMin(list<BHNode<T> *> _heap)
 {
 	auto it = _heap.begin();
-	Node<T> *temp = *it;
+	BHNode<T> *temp = *it;
 	while (it != _heap.end())
 	{
 		if ((*it)->data < temp->data)
@@ -218,10 +217,10 @@ Node<T> *getMin(list<Node<T> *> _heap)
 }
 
 template <typename T>
-list<Node<T> *> extractMin(list<Node<T> *> _heap)
+list<BHNode<T> *> extractMin(list<BHNode<T> *> _heap)
 {
-	list<Node<T> *> new_heap, lo;
-	Node<T> *temp;
+	list<BHNode<T> *> new_heap, lo;
+	BHNode<T> *temp;
 
 	// temp contains the pointer of minimum value
 	// element in heap
@@ -246,7 +245,7 @@ list<Node<T> *> extractMin(list<Node<T> *> _heap)
 
 // print function for Binomial Tree
 template <typename T>
-void printTree(Node<T> *h)
+void printTree(BHNode<T> *h)
 {
 	while (h)
 	{
@@ -258,7 +257,7 @@ void printTree(Node<T> *h)
 
 // print function for binomial heap
 template <typename T>
-void printHeap(list<Node<T> *> _heap)
+void printHeap(list<BHNode<T> *> _heap)
 {
 	auto it = _heap.begin();
 	while (it != _heap.end())
